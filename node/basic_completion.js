@@ -1,3 +1,8 @@
+require('dotenv').config({ path: '../.env' });
+const myVariable = process.env.TEST;
+if (!myVariable) {
+  console.error('environment variable is missing or empty');
+}
 const OpenAI = require("openai");
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,

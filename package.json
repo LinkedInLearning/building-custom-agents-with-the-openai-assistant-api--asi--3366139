@@ -1,0 +1,23 @@
+{
+  "name": "building-custom-agents-with-the-openai-assistant-api--asi--3366139",
+  "version": "1.0.0",
+  "description": "Demonstrations of how to use OpenAI's Assistant API in Python and Node.js. Exercise files for the LinkedIn Learning course \"Building Custom Agents with the OpenAI Assistant API\" by Morten Rand-Hendriksen.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LinkedInLearning/building-custom-agents-with-the-openai-assistant-api--asi--3366139.git"
+  },
+  "author": "@mor10",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LinkedInLearning/building-custom-agents-with-the-openai-assistant-api--asi--3366139/issues"
+  },
+  "homepage": "https://github.com/LinkedInLearning/building-custom-agents-with-the-openai-assistant-api--asi--3366139#readme",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "openai": "^4.20.0"
+  }
+}

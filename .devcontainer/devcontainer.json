@@ -12,7 +12,7 @@
     "humao.rest-client"
   ],
   "onCreateCommand": "echo PS1='\"$ \"' >> ~/.bashrc",
-  "postCreateCommand": "npm install",
+  "postCreateCommand": "npm install && pip install openai python-dotenv",
   "forwardPorts": [
     3000
   ],
