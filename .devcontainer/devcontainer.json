@@ -5,16 +5,19 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "extensions": [
-    "ms-python.python",
-    "dbaeumer.vscode-eslint",
-    "GitHub.github-vscode-theme",
-    "humao.rest-client"
-  ],
   "onCreateCommand": "echo PS1='\"$ \"' >> ~/.bashrc",
   "postCreateCommand": "npm install && pip install openai python-dotenv",
   "forwardPorts": [
     3000
   ],
-  "postAttachCommand": "git pull --all"
+  "postAttachCommand": "git pull --all",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "dbaeumer.vscode-eslint",
+        "GitHub.github-vscode-theme"
+      ]
+    }
+  }
 }

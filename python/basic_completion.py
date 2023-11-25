@@ -1,15 +1,20 @@
 import os
 import json
 from dotenv import load_dotenv
-import openai
+from openai import OpenAI
 
 # Load the environment variables from the .env file in the root.
 dotenv_path = os.path.join(os.path.dirname(__file__), '..', '.env')
 load_dotenv(dotenv_path)
-openai.api_key = os.getenv('OPENAI_API_KEY')
+
+# Create an OpenAI client
+client = OpenAI(
+    # defaults to os.environ.get("OPENAI_API_KEY")
+    api_key=os.getenv('OPENAI_API_KEY'),
+)
 
 # Create a completion
-completion = openai.chat.completions.create(
+completion = client.chat.completions.create(
   model="gpt-4-1106-preview",
   messages=[
     {"role": "system", "content": "You are a helpful assistant. Your response should be in JSON format."},
@@ -29,4 +34,4 @@ def valid_json(response):
     return 'Error: The response is not valid JSON.'
   return 'Pass: The response is valid JSON.'
 
-print(is_json(completion.choices[0].message.content))
+print(valid_json(completion.choices[0].message.content))
