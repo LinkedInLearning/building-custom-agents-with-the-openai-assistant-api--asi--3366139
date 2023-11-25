@@ -1,8 +1,6 @@
+// Load the environment variables from the.env file in the root.
 require('dotenv').config({ path: '../.env' });
-const myVariable = process.env.TEST;
-if (!myVariable) {
-  console.error('environment variable is missing or empty');
-}
+
 const OpenAI = require("openai");
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -17,7 +15,7 @@ async function main() {
         content:
           "You are a helpful assistant. Your response should be in JSON format.",
       },
-      { role: "user", content: "Hello!" },
+      { role: "user", content: "Give me the colors of the rainbow and their HSL values." },
     ],
     response_format: { type: "json_object" },
   });
@@ -25,16 +23,16 @@ async function main() {
   console.log(completion.choices[0].message.content);
 
   // Check if the OpenAI API response is a valid JSON
-  const isJSON = (obj) => {
+  const validJSON = (response) => {
     try {
-      JSON.parse(obj);
-      return true;
+      JSON.parse(response);
+      return 'Pass: The response is valid JSON.';
     } catch (e) {
-      return false;
+      return 'Error: The response is not valid JSON.';
     }
   };
 
-  console.log(isJSON(completion.choices[0].message.content));
+  console.log(validJSON(completion.choices[0].message.content));
 }
 
 main();
