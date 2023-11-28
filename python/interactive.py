@@ -1,12 +1,13 @@
+# Python advanced example of how to build an interactive chat with the OpenAI Assistant API.
+
 import os
 import time
 import sys
 from dotenv import load_dotenv
 from openai import OpenAI
 
-
 # Assistant ID (can be a hard-coded ID)
-MATH_ASSISTANT_ID = 'asst_uMT48tOC8NTv4JKlY2qPzb7G'
+ASSISTANT_ID = 'asst_uMT48tOC8NTv4JKlY2qPzb7G'
 
 # Load environment variables
 dotenv_path = os.path.join(os.path.dirname(__file__), '..', '.env')
@@ -53,7 +54,8 @@ def pretty_print(messages):
 
 # Main chat loop
 def chat_loop():
-    print("Welcome to the Math Assistant Chat. Type 'exit' to quit.")
+    assistant = client.beta.assistants.retrieve(ASSISTANT_ID)
+    print(f"Welcome to the {assistant.name} Chat. Type 'exit' to quit.")
     thread = client.beta.threads.create()
 
     while True:
@@ -61,7 +63,7 @@ def chat_loop():
         if user_input.lower() == 'exit':
             break
 
-        run = submit_message(MATH_ASSISTANT_ID, thread, user_input)
+        run = submit_message(ASSISTANT_ID, thread, user_input)
         run = wait_on_run(run, thread)
         responses = get_response(thread)
         pretty_print(responses) 

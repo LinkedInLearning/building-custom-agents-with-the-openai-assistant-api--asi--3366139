@@ -1,9 +1,16 @@
+# Python basic example of how to use the OpenAI API to create:
+# - assistant
+# - thread
+# - message
+# - run.
+#
+# Examples taken from https://cookbook.openai.com/examples/assistants_api_overview_python
+# Full API documentation: https://platform.openai.com/docs/api-reference/assistants 
+
 import os
-import json
+import time
 from dotenv import load_dotenv
 from openai import OpenAI
-import time
-from IPython.display import display
 
 # Load the environment variables from the .env file in the root.
 dotenv_path = os.path.join(os.path.dirname(__file__), '..', '.env')
@@ -21,23 +28,29 @@ assistant = client.beta.assistants.create(
     instructions="You are a personal math tutor. Answer questions briefly, in a sentence or less.",
     model="gpt-4-1106-preview",
 )
-print("The assistant object:")
-print(assistant)
+print(f"The assistant object:\n{assistant
+                                }\n")
 
 # Create a thread
 thread = client.beta.threads.create()
-print("The thread object:")
-print(thread)
+print(f"The thread object:\n{thread}\n")
+
+# Create a message
+message = client.beta.threads.messages.create(
+  thread_id=thread.id,
+  role="user",
+  content="I need to solve the equation `3x + 11 = 14`. Can you help me?",
+)
+print(f"The message object:\n{message}\n")
 
 # Create a run
 run = client.beta.threads.runs.create(
     thread_id=thread.id,
     assistant_id=assistant.id,
 )
-print("The run object:")
-print(run)
+print(f"The run object:\n{run}\n")
 
-# Create a loop that checks the run status every 0.5 seconds
+# Wait for the run to complete
 def wait_on_run(run, thread):
     while run.status == "queued" or run.status == "in_progress":
         run = client.beta.threads.runs.retrieve(
@@ -46,13 +59,12 @@ def wait_on_run(run, thread):
         )
         time.sleep(0.5)
     return run
-
 run = wait_on_run(run, thread)
-print("Run status:")
-print(run.status)
 
-# Get all the messages in the thread
-messages = client.beta.threads.messages.list(thread_id=thread.id)
-print("All thread messages:")
-print(messages)
+# Get the response object
+response = client.beta.threads.messages.list(thread_id=thread.id, order="asc")
+print(f"The response object:\n{response}\n")
 
+# Print the assistant's response
+print(f"Assistant: {response.data[-1].content[0].text.value}")
+    

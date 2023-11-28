@@ -1,10 +1,15 @@
+/**
+ * Python advanced example of how to build an interactive chat with the OpenAI Assistant API.
+ */
+
 const openai = require('openai');
 const readline = require('readline');
 const dotenv = require('dotenv');
 dotenv.config();
 
 // Assistant ID (can be a hard-coded ID)
-const MATH_ASSISTANT_ID = 'asst_uMT48tOC8NTv4JKlY2qPzb7G';
+const ASSISTANT_ID = 'asst_uMT48tOC8NTv4JKlY2qPzb7G';
+
 
 // Load the environment variables from the.env file in the root.
 require('dotenv').config({ path: '../.env' });
@@ -19,7 +24,7 @@ async function submitMessage(assistantId, thread, userMessage) {
 
   try {
     // Create a message
-    const messageResponse = await client.beta.threads.messages.create(
+    await client.beta.threads.messages.create(
       thread.id, // Thread ID as the first argument
       { role: "user", content: userMessage } // Message data as the second argument
     );
@@ -51,7 +56,6 @@ async function getResponse(thread) {
 }
 
 
-
 // Function to wait for the assistant's response with a spinner
 async function waitOnRun(run, thread) {
   const spinner = ['|', '/', '—', '\\'];
@@ -65,8 +69,8 @@ async function waitOnRun(run, thread) {
 
     // Check run status
     run = await client.beta.threads.runs.retrieve(
-      thread.id, // Thread ID as the first argument
-      run.id    // Run ID as the second argument
+      thread.id,
+      run.id
     );
     await new Promise(resolve => setTimeout(resolve, 100));
   }
@@ -86,19 +90,25 @@ function prettyPrint(messages) {
   }
 }
 
+
 // Main chat loop
 async function chatLoop() {
-  console.log("Welcome to the Math Assistant Chat. Type 'exit' to quit.");
+  const assistant = await client.beta.assistants.retrieve(
+    ASSISTANT_ID
+  );
+  console.log(`Welcome to the ${assistant.name} Chat. Type 'exit' to quit.`);
 
-  const thread = await client.beta.threads.create();
+  // Display the initial prompt when the app loads
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
-    prompt: '> ' // Define the prompt symbol here
+    prompt: '> '
   });
+  rl.prompt();
 
-  rl.prompt(); // Display the initial prompt when the app loads
+  const thread = await client.beta.threads.create();
 
+  // Process each line of input from the user
   for await (const line of rl) {
     const user_input = line.trim();
     if (user_input.toLowerCase() === 'exit') {
@@ -106,13 +116,15 @@ async function chatLoop() {
       break;
     }
 
-    const run = await submitMessage(MATH_ASSISTANT_ID, thread, user_input);
+    const run = await submitMessage(ASSISTANT_ID, thread, user_input);
     await waitOnRun(run, thread);
     const responses = await getResponse(thread);
     prettyPrint(responses);
 
-    rl.prompt(); // Re-display the prompt after processing each message
+    // Re-display the prompt after processing each message
+    rl.prompt();
   }
 }
+
 
 chatLoop();
