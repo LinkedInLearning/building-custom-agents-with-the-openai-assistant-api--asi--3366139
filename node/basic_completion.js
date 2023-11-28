@@ -2,12 +2,12 @@
 require('dotenv').config({ path: '../.env' });
 
 const OpenAI = require("openai");
-const openai = new OpenAI({
+const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
 async function main() {
-  const completion = await openai.chat.completions.create({
+  const completion = await client.chat.completions.create({
     model: "gpt-4-1106-preview",
     messages: [
       {
