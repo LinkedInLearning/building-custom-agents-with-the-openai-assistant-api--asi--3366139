@@ -13,9 +13,6 @@ const openai = require('openai');
 const dotenv = require('dotenv');
 dotenv.config();
 
-// Assistant ID (can be a hard-coded ID)
-const MATH_ASSISTANT_ID = 'asst_uMT48tOC8NTv4JKlY2qPzb7G';
-
 // Load the environment variables from the.env file in the root.
 require('dotenv').config({ path: '../.env' });
 

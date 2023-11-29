@@ -28,8 +28,7 @@ assistant = client.beta.assistants.create(
     instructions="You are a personal math tutor. Answer questions briefly, in a sentence or less.",
     model="gpt-4-1106-preview",
 )
-print(f"The assistant object:\n{assistant
-                                }\n")
+print(f"The assistant object:\n{assistant}\n")
 
 # Create a thread
 thread = client.beta.threads.create()
