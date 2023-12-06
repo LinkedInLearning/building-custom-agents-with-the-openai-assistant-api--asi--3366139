@@ -19,10 +19,5 @@
     "terminal.integrated.fontSize": 18,
     "workbench.colorTheme": "Visual Studio Dark",
     "workbench.fontAliasing": "antialiased",
-    "workbench.statusBar.visible": true,
-    "rest-client.environmentVariables": {
-      "openai": {
-        "key": "{OpenAiAPIkey}"
-      }
-    }
+    "workbench.statusBar.visible": true
   }
